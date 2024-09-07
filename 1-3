@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define SIZE 100
+
+int main() {
+	int num[SIZE];
+	int total = 0;
+	int max, min;
+	float avg = 0.0;
+
+	srand(time(NULL));
+	for (int i = 0; i < SIZE; i++) {
+		num[i] = (rand() % 100) + 1;
+	}
+
+	for (int i = 0; i < SIZE; i++) {
+		printf("%3d\t", num[i]);
+		if ((i + 1) % 5 == 0) printf("\n");
+	}
+
+	for (int i = 0; i < 10; i++) {
+		total += num[i];
+	}
+
+	avg = (float)total / 100;
+	
+	max = num[0];
+	min = num[0];
+
+	for (int i = 0; i < SIZE; i++) {
+		if (max < num[i]) max = num[i];
+		if (min > num[i]) min = num[i];
+	}
+	printf("avg = %f, max = %d, min = %d", avg, max, min);
+
+
+	return 0;
+}
