@@ -1,0 +1,178 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_item 10
+
+int count = 5;
+int choice, a, b, id; //a=입고 1,2 선택
+int max = 0;
+int max_id, low_id;
+int store[MAX_item] = { 0 }; //입고수량
+int sell[MAX_item] = { 0 }; //판매수량
+int jaego[MAX_item] = { 0 }; //재고수량
+int all_sell = 0; //전체판매
+int all_store = 0;//전체입고
+
+char name[10][100]; //상품명
+
+
+//상품 구조체
+struct product {
+    int id_number[MAX_item] = { 0 };
+    char name[MAX_item] = { 0 };
+    int price[MAX_item] = { 0 };
+    int store[MAX_item] = { 0 };
+    int sell[MAX_item] = { 0 };
+} PRODUCT;
+
+
+
+
+void store_fx(int a) {
+   product id;
+   product name;
+   for(int i =0; i <count; i++) {
+       printf("상품 ID : ");
+       scanf("%d", id);
+   }
+   
+   
+}
+
+void sell_fx(int a) {
+    
+}
+
+
+void present_fx() {
+    //개별상품정보
+    printf("원하는 상품 ID를 입력 : ");
+    scanf("%d", id);
+    //상품명 가격 입고수량 판매수량 출력....
+    printf() 
+    
+}
+
+   
+void all_present() {
+     //전체 입고,, 판매, 재고 수량
+    for (int i = 0; i < count; i++) {
+        all_store = all_store + store[i];
+        all_sell = all_sell + sell[i];
+        jaego[i] = store[i] - sell[i];
+    }
+
+  
+    printf("모든 제품의 재고 수량 : ");
+    for (int i = 0; i < count; i++) {
+        printf("%d ", jaego[i]);
+    }
+    printf("\n");
+
+     /*for (int i = 0; i < count; i++) {
+        all_sell = all_sell + sell[i];
+    }*/
+    printf("전체 판매량 : %d ", all_sell);
+
+    double sale_rate = ((double)all_sell / all_store) * 100; //판매율
+
+    printf("(판매율 %.2f%%)\n", sale_rate);
+
+    for (int i = 0; i < count; i++) {
+
+        if (max <= sell[i]) {
+            max = sell[i];
+            max_id = i;
+        }
+    }
+    printf("가장 많이 판매된 상품 : ID %d, 판매량 %d\n", max_id + 1, max);
+
+    int low = sell[0];
+    for (int i = 0; i < count; i++) {
+
+        if (low >= sell[i]) {
+            low = sell[i];
+            low_id = i;
+        }
+    }
+    printf("가장 적게 판매된 상품 : ID %d, 판매량 %d\n", low_id + 1, low);
+
+    int no_eno; //부족상품
+    int j = 0;
+    for (int i = 0; i < count; i++) {
+        
+        if (jaego[j] > 2) {
+            j++;
+        }
+        else {
+            no_eno = jaego[j];
+            j++;
+            printf("상품 ID %d : 상품명 : %s : 재고부족(%d)\n", j, name[j], no_eno);
+        }
+    }
+}
+
+
+
+
+
+/*
+void bought_fx() { //상품명 입력
+     //name배열에 상품 수량만큼 저장해야되, 그거어떻게하는건데
+    //name배열에 문자열 (크기100자리) 5개 저장
+
+    for (int i = 0; i < 5; i++) {
+
+        printf("ID %d 상품명 :", i+1);
+        scanf("%s", name[i]);
+    }
+}
+*/
+
+
+int main() {
+
+    printf("[쇼핑몰 관리 프로그램] \n");
+
+
+    while (1) {
+        printf("원하는 메뉴를 선택하세요. (1. 입고, 2. 판매, 3. 상품현황, 4. 상품명 입력, 5 종료 >> ");
+        scanf("%d", &choice);
+        switch (choice) {
+        case(1): {
+            //입고함수 
+
+            printf("입고수량을 입력: 전체 상품 입고수량 입력1, 개별 상품 입력 2를 선택 \n");
+            scanf("%d", &a);
+            store_fx(a);
+            break;
+
+        }
+        case(2): {
+            //판매함수
+
+            printf("판매수량을 입력: 전체 상품 판매수량 입력1, 개별 상품 입력 2를 선택 \n");
+            scanf("%d", &b);
+            sell_fx(b);
+            break;
+        }
+        case(3): {
+            //개별상품정보
+            present_fx();
+            break;
+        }
+
+        case(4): {
+            //전체상품정보
+            all_present();
+            break;
+        }
+
+        case(5): {
+            //종료
+            return 0;
+        }
+        }
+
+    }
+}
