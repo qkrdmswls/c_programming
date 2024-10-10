@@ -4,7 +4,7 @@
 #define MAX_item 10
 
 int count = 5;
-int choice, a, b, id; //a=입고 1,2 선택
+int choice,id,a;
 int max = 0;
 int max_id, low_id;
 int store[MAX_item] = { 0 }; //입고수량
@@ -15,32 +15,44 @@ int all_store = 0;//전체입고
 
 char name[10][100]; //상품명
 
+int i = 0;
 
 //상품 구조체
-struct product {
-    int id_number[MAX_item] = { 0 };
-    char name[MAX_item] = { 0 };
-    int price[MAX_item] = { 0 };
-    int store[MAX_item] = { 0 };
-    int sell[MAX_item] = { 0 };
+typedef struct product {
+    int id_number;
+    char name[MAX_item];
+    int price;
+    int store;
+    int sell;
+    int all_sellprice;
 } PRODUCT;
 
+PRODUCT product[] = { 0 };
 
 
+void store_fx() {
+    
+        printf("상품 ID : ");
+        scanf("%d", &product[i].id_number);
 
-void store_fx(int a) {
-   product id;
-   product name;
-   for(int i =0; i <count; i++) {
-       printf("상품 ID : ");
-       scanf("%d", id);
-   }
-   
-   
+        printf("상품이름 : ");
+        scanf("%s", product[i].name);
+
+        printf("상품 입고수량 : ");
+        scanf("%d", &product[i].store);
+
+        printf("상품  판매가격 : ");
+        scanf("%d", &product[i].price);
+    
+
+
 }
 
-void sell_fx(int a) {
-    
+void sell_fx() {
+       printf("상품 판매수량 : ");
+       scanf("%d", &product[i].sell);
+   
+
 }
 
 
@@ -49,29 +61,38 @@ void present_fx() {
     printf("원하는 상품 ID를 입력 : ");
     scanf("%d", id);
     //상품명 가격 입고수량 판매수량 출력....
-    printf() 
-    
+    a = find_id();
+    product[a].all_sellprice = (product[a].price) * product[a].sell;
+
+    printf("상품명 : \n", product[a].name);
+    printf("상품명 : \n", product[a].price);
+    printf("상품명 : \n", product[a].store);
+    printf("상품명 : \n", product[a].sell);
+    printf("상품명 : \n", product[a].all_sellprice);
+
+
+
 }
 
-   
+
 void all_present() {
-     //전체 입고,, 판매, 재고 수량
+    //전체 입고,, 판매, 재고 수량
     for (int i = 0; i < count; i++) {
         all_store = all_store + store[i];
         all_sell = all_sell + sell[i];
         jaego[i] = store[i] - sell[i];
     }
 
-  
+
     printf("모든 제품의 재고 수량 : ");
     for (int i = 0; i < count; i++) {
         printf("%d ", jaego[i]);
     }
     printf("\n");
 
-     /*for (int i = 0; i < count; i++) {
-        all_sell = all_sell + sell[i];
-    }*/
+    /*for (int i = 0; i < count; i++) {
+       all_sell = all_sell + sell[i];
+   }*/
     printf("전체 판매량 : %d ", all_sell);
 
     double sale_rate = ((double)all_sell / all_store) * 100; //판매율
@@ -100,7 +121,7 @@ void all_present() {
     int no_eno; //부족상품
     int j = 0;
     for (int i = 0; i < count; i++) {
-        
+
         if (jaego[j] > 2) {
             j++;
         }
@@ -113,6 +134,13 @@ void all_present() {
 }
 
 
+int find_id() {
+    for (int j = 0; j < count; j++) {
+        if (id == product[j].id_number) {
+            return j;
+        }       
+    }
+}
 
 
 
@@ -142,18 +170,18 @@ int main() {
         case(1): {
             //입고함수 
 
-            printf("입고수량을 입력: 전체 상품 입고수량 입력1, 개별 상품 입력 2를 선택 \n");
-            scanf("%d", &a);
-            store_fx(a);
+            
+            store_fx();
+            i++;
             break;
 
         }
         case(2): {
             //판매함수
 
-            printf("판매수량을 입력: 전체 상품 판매수량 입력1, 개별 상품 입력 2를 선택 \n");
-            scanf("%d", &b);
-            sell_fx(b);
+            
+            sell_fx();
+            
             break;
         }
         case(3): {
