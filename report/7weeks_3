@@ -43,7 +43,7 @@ void selection_sort_point(POINT* point, int size)
             else if(point[least].x == point[j].x && point[least].y > point[j].y)
                 least = j;
         } 
-        swap_point(&poin[i], point+least);
+        swap_point(&point[i], point+least);
     }   
 }
 int main()
