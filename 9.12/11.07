@@ -1,0 +1,226 @@
+//10.31  현황 파일에 저장
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_item 10
+
+int count = 5;
+int choice,id,a;
+int max = 0;
+int max_id, low_id;
+int store[MAX_item] = { 0 }; //입고수량
+int sell[MAX_item] = { 0 }; //판매수량
+int jaego[MAX_item] = { 0 }; //재고수량
+int all_sell = 0; //전체판매
+int all_store = 0;//전체입고
+
+char name[10][100]; //상품명
+
+int i = 0;
+
+//상품 구조체
+typedef struct product {
+    int id_number; //상품아이디
+    char name[MAX_item]; //상품명
+    int price; //가격
+    int store; //입고량
+    int sell; //판매량
+    int all_sellprice; //총판매금액
+} PRODUCT;
+
+PRODUCT product[MAX_item];
+
+
+int find_id() {
+    for (int j = 0; j < count; j++) {
+        if (id == product[j].id_number) {
+            return j;
+        }       
+    }
+    return -1; //못찾앗을때
+}
+
+
+void store_fx() {
+    printf("상품 ID : ");
+    scanf("%d", &id);
+    
+    //못찾았을때 -1을 반환        
+    int ii = find_id(); 
+    if(ii !=-1) {
+        printf("상품이름 : ");
+        scanf("%s", product[ii].name);
+        
+        printf("상품 입고수량 : ");
+        scanf("%d", &product[ii].store);
+        
+        printf("상품  판매가격 : ");
+        scanf("%d", &product[ii].price);
+
+        return;
+    }
+    
+    product[i].id_number = id;
+    printf("상품이름 : ");
+    scanf("%s", product[i].name);
+    
+    printf("상품 입고수량 : ");
+    scanf("%d", &product[i].store);
+     
+    printf("상품  판매가격 : ");
+    scanf("%d", &product[i].price);
+    i++;
+    
+
+
+}
+
+void sell_fx() {
+    printf("상품 ID : ");
+    scanf("%d", &id);
+
+    // 상품 ID 찾기
+    a = find_id();
+    if (a == -1) {
+        printf("해당 ID의 상품을 찾을 수 없습니다.\n");
+        return;
+    }
+
+    printf("판매 수량 : ");
+    scanf("%d", &product[a].sell);
+    
+    product[a].sell += product[a].sell;  // 판매량 증가
+
+       
+   
+
+}
+
+
+void present_fx() {
+    //개별상품정보
+    printf("원하는 상품 ID를 입력 : ");
+    scanf("%d", &id);
+    //상품명 가격 입고수량 판매수량 출력....
+    a = find_id();
+    product[a].all_sellprice = product[a].price * product[a].sell;
+
+    printf("상품명 : %s \n", product[a].name);
+    printf("상품가격 : %d원\n", product[a].price);
+    printf("입고수량 : %d\n", product[a].store);
+    printf("판매수량 : %d\n", product[a].sell);
+    printf("총 판매금액 : %d\n", product[a].all_sellprice);
+
+}
+
+
+
+void all_present() {
+   
+    for(int i =0; i<count; i++) {
+        jaego[i] = product[i].store - product[i].sell;
+        all_sell += product[i].sell;
+        all_store += product[i].store;    
+    }
+    
+
+    printf("모든 제품의 재고 수량 : ");
+    for (int i = 0; i < count; i++) {
+        printf("%d ", jaego[i]);
+    }
+    printf("\n");
+
+
+    printf("전체 판매량 : %d ", all_sell);
+
+    double sale_rate = ((double)all_sell / all_store) * 100; //판매율
+
+    printf("(판매율 %.2f%%)\n", sale_rate);
+
+    for (int i = 0; i < count; i++) {
+
+        if (max <= product[i].sell) {
+            max = product[i].sell;
+            max_id = i;
+        }
+    }
+    printf("가장 많이 판매된 상품 : ID %d, 판매량 %d\n", max_id + 1, max);
+
+    int low = product[0].sell;
+    for (int i = 0; i < count; i++) {
+
+        if (low >= product[i].sell) {
+            low = product[i].sell;
+            low_id = i;
+        }
+    }
+    printf("가장 적게 판매된 상품 : ID %d, 판매량 %d\n", low_id + 1, low);
+
+    int no_eno; //부족상품
+    int j = 0;
+    for (int i = 0; i < count; i++) {
+
+        if (jaego[j] > 2) {
+            j++;
+        }
+        else {
+            no_eno = jaego[j];
+            j++;
+            printf("상품 ID %d : 상품명 : %s : 재고부족(%d)\n", j, product[j].name, no_eno);
+        }
+    }
+}
+
+
+//문제!
+//2, 4번이 계속 재고 부족뜸
+//상품명은 제대로 저장되는데 값이 저장안되는듯 계속 0뜸
+
+
+
+int main() {
+
+    printf("[쇼핑몰 관리 프로그램] \n");
+
+
+    while (1) {
+        printf("원하는 메뉴를 선택하세요. (1. 입고, 2. 판매, 3. 개별현황, 4. 전체현황, 5 종료 >> ");
+        scanf("%d", &choice);
+        switch (choice) {
+        case(1): {
+            //입고함수 
+
+            
+            store_fx();
+            i++;
+            break;
+
+        }
+        case(2): {
+            //판매함수
+
+            
+            sell_fx();
+            
+            break;
+        }
+        case(3): {
+            //개별상품정보
+            present_fx();
+            break;
+        }
+
+        case(4): {
+            //전체상품정보
+            all_present();
+            break;
+        }
+
+        case(5): {
+            //종료
+            return 0;
+        }
+        }
+
+    }
+}
