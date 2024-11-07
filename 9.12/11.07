@@ -5,7 +5,7 @@
 #define MAX_item 10
 
 int count = 5;
-int choice,id,a;
+int choice, id, a;
 int max = 0;
 int max_id, low_id;
 int store[MAX_item] = { 0 }; //입고수량
@@ -35,7 +35,7 @@ int find_id() {
     for (int j = 0; j < count; j++) {
         if (id == product[j].id_number) {
             return j;
-        }       
+        }
     }
     return -1; //못찾앗을때
 }
@@ -44,33 +44,33 @@ int find_id() {
 void store_fx() {
     printf("상품 ID : ");
     scanf("%d", &id);
-    
+
     //못찾았을때 -1을 반환        
-    int ii = find_id(); 
-    if(ii !=-1) {
+    int ii = find_id();
+    if (ii != -1) {
         printf("상품이름 : ");
         scanf("%s", product[ii].name);
-        
+
         printf("상품 입고수량 : ");
         scanf("%d", &product[ii].store);
-        
+
         printf("상품  판매가격 : ");
         scanf("%d", &product[ii].price);
 
         return;
     }
-    
+
     product[i].id_number = id;
     printf("상품이름 : ");
     scanf("%s", product[i].name);
-    
+
     printf("상품 입고수량 : ");
     scanf("%d", &product[i].store);
-     
+
     printf("상품  판매가격 : ");
     scanf("%d", &product[i].price);
     i++;
-    
+
 
 
 }
@@ -86,13 +86,16 @@ void sell_fx() {
         return;
     }
 
-    printf("판매 수량 : ");
-    scanf("%d", &product[a].sell);
-    
-    product[a].sell += product[a].sell;  // 판매량 증가
+    int sell_plus;
 
-       
-   
+    printf("판매 수량 : ");
+    scanf("%d", &sell_plus);
+
+
+    product[a].sell += sell_plus;  // 판매량 증가
+
+
+
 
 }
 
@@ -116,13 +119,13 @@ void present_fx() {
 
 
 void all_present() {
-   
-    for(int i =0; i<count; i++) {
+
+    for (int i = 0; i < count; i++) {
         jaego[i] = product[i].store - product[i].sell;
         all_sell += product[i].sell;
-        all_store += product[i].store;    
+        all_store += product[i].store;
     }
-    
+
 
     printf("모든 제품의 재고 수량 : ");
     for (int i = 0; i < count; i++) {
@@ -189,19 +192,13 @@ int main() {
         switch (choice) {
         case(1): {
             //입고함수 
-
-            
             store_fx();
-            i++;
             break;
 
         }
         case(2): {
             //판매함수
-
-            
             sell_fx();
-            
             break;
         }
         case(3): {
@@ -209,13 +206,11 @@ int main() {
             present_fx();
             break;
         }
-
         case(4): {
             //전체상품정보
             all_present();
             break;
         }
-
         case(5): {
             //종료
             return 0;
